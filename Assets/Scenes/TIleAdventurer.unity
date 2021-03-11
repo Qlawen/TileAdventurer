@@ -265,6 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTilemap: {fileID: 1091272962}
   collisionTilemap: {fileID: 1955738863}
+  timeToMove: 0.2
 --- !u!1 &901878604
 GameObject:
   m_ObjectHideFlags: 0
