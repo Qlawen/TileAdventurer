@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Vector3 origPos, targetPos;
     [SerializeField] private float timeToMove = 0.2f;
+    [SerializeField] public int maxMoveSpaces;
+    public bool canMove;
 
     private void Awake()
     {
@@ -31,10 +33,20 @@ public class PlayerController : MonoBehaviour
     {
         controls.Disable();
     }
+
     // Start is called before the first frame update
     void Start()
     {
-        controls.Main.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());
+        maxMoveSpaces = 8;
+    }
+
+    private void FixedUpdate()
+    {
+        
+        {
+            controls.Main.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());
+
+        }
     }
 
     private void Move(Vector2 direction)
@@ -43,7 +55,7 @@ public class PlayerController : MonoBehaviour
         if (CanMove(direction) && !isMoving)
             // transform.position += (Vector3)direction;
             StartCoroutine(MovePlayer ((Vector3) direction));
-        
+       
 
     }
     
@@ -58,18 +70,22 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator MovePlayer(Vector3 direction)
     {
-        isMoving = true;
-        float elapsedTime = 0;
-
-        origPos = transform.position;
-        targetPos = origPos + direction;
-        while (elapsedTime < timeToMove)
+        if (maxMoveSpaces > 0)
         {
-            transform.position = Vector3.Lerp(origPos, targetPos, (elapsedTime / timeToMove));
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            isMoving = true;
+            float elapsedTime = 0;
+
+            origPos = transform.position;
+            targetPos = origPos + direction;
+            while (elapsedTime < timeToMove)
+            {
+                transform.position = Vector3.Lerp(origPos, targetPos, (elapsedTime / timeToMove));
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.position = targetPos;
+            isMoving = false;
         }
-        transform.position = targetPos;
-        isMoving = false;
+        maxMoveSpaces--;
     }
 }
