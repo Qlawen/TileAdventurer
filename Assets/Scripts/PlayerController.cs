@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // This section relates to moving player and limiting movement
     private IEnumerator MovePlayer(Vector3 direction)
     {
         if (maxMoveSpaces > 0)
@@ -85,7 +86,8 @@ public class PlayerController : MonoBehaviour
             }
             transform.position = targetPos;
             isMoving = false;
+            maxMoveSpaces--;
         }
-        maxMoveSpaces--;
+        
     }
 }
